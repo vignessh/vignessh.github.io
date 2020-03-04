@@ -1,0 +1,11 @@
+---
+layout: post
+title: Learning...
+date: 2014-08-20 17:14
+comments: true
+categories: learning
+published: false
+---
+For somebody who is getting into the IT sector today, there is a huge learning curve when it comes to the sheer number of programming languages, tools, libraries, paradigms and more. Most often times, we tend to do a Google search or maybe a Stackoverflow search to clarify our doubts or even to get started. Learning on the job is okay, but it becomes detrimental to one's growth after a certain point of time. We tend to always look for answers and slowly lose the virtue of patience and inquisitiveness. <!--more-->
+
+We tend to hurry and constantly tell ourselves to put important decisions in the backlog like figuring out why something behaves in a certain way. Over a period of time, this backlog grows and when left unattended, tends to overbear us with its sheer size.
