@@ -4,14 +4,15 @@ title: "On continuous delivery"
 date: 2013-04-30 22:40
 comments: false
 published: false
-categories: [continuous delivery]
+tags:
+- "continuous delivery"
 ---
 
 In our current project, we have managed to reach a steady state of delivering working software into production every six weeks. We reached this state over the course of last 3 years. Now, the release activities have become more mature and well understood and there is no drama around that any more.
 <!-- more -->
 ##How did we reach here?
 
-Automation is the key factor for us to reach this position. We have reached a stage where we can 
+Automation is the key factor for us to reach this position. We have reached a stage where we can
 
 ##What are the future directions?
 
@@ -26,4 +27,4 @@ We reached this stable state over the course of time but we've reached a point w
 
 
 
-Lets assume we are a team developing the Microsoft Windows operating system. Barring the major releases like Windows 7, Windows 8 etc., we do not expect end users to reformat their disk and install the new operating system. Any fixes, enhancements are delivered via Windows update as Service packs or the likes. 
+Lets assume we are a team developing the Microsoft Windows operating system. Barring the major releases like Windows 7, Windows 8 etc., we do not expect end users to reformat their disk and install the new operating system. Any fixes, enhancements are delivered via Windows update as Service packs or the likes.

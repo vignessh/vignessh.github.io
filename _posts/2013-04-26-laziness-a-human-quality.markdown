@@ -4,7 +4,8 @@ title: "Laziness: A human quality"
 date: 2013-04-26 14:25
 comments: true
 share: true
-categories: behaviour
+tags:
+ - behaviour
 ---
 The amount of inertia that we build over a period of time is simply astonishing. The human brain likes to settle to a certain rhythm unless we consciously keep pushing it. With our current lifestyles, it is so easy to break the pattern and be lazy about things which we ought to do. <!--more-->
 

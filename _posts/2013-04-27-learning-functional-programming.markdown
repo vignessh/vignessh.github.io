@@ -4,7 +4,11 @@ title: "Learning functional programming - Part 1"
 date: 2013-04-27 16:03
 comments: true
 share: true
-categories: [c#, clojure, functional programming, linq]
+tags:
+- csharp
+- clojure
+- "functional programming"
+- linq
 ---
 Ever since I saw Rich Hickey's [Simple Made Easy](http://www.infoq.com/presentations/Simple-Made-Easy) presentation, I have been wanting to learn [Clojure](http://clojure.org). For the simple fact that it was designed by someone who has spent enough time thinking about problems faced with current generation of programming languages and the limitations they impose. <!--more-->
 
@@ -12,7 +16,7 @@ I've been intrigued by functional programming paradigm ever since my good friend
 
 For example, instead of
 
-{% highlight csharp %}
+{% codeblock lang:csharp %}
 var tasks = new List<Task>();
 foreach(var user in users)
 {
@@ -20,12 +24,12 @@ foreach(var user in users)
 	tasks.AddRange(userTasks);
 }
 return tasks;
-{% endhighlight %}
+{% endcodeblock %}
 
 prefer something like
 
-{% highlight csharp %}
+{% codeblock lang:csharp %}
 return users.Select(user => Tasks.For(user.Id)).SelectMany(task => task).ToList();
-{% endhighlight %}
+{% endcodeblock %}
 
 This might seem like syntactic sugar at first glance. That is because the functional paradigm have been transplanted onto a object oriented language like C# using Linq. In a pure functional language like [Clojure](http://clojure.org) or [Haskell](http://www.haskell.org), the syntax would feel more natural. Interestingly, the Linq implementation is purely via extension methods and not by extending the `IEnumerable<T>` interface. We'll explore this bit in a follow up post.

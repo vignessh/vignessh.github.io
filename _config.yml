@@ -7,53 +7,84 @@
 #
 # For technical reasons, this file is *NOT* reloaded automatically when you use
 # 'bundle exec jekyll serve'. If you change this file, please restart the server process.
-#
-# If you need help with YAML syntax, here are some quick references for you:
-# https://learn-the-web.algonquindesign.ca/topics/markdown-yaml-cheat-sheet/#yaml
-# https://learnxinyminutes.com/docs/yaml/
-#
+
 # Site settings
 # These are used to personalize your new site. If you look in the HTML files,
 # you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
-
-title: Kaleidoscope
-#email: your-email@example.com
+title: Thoughts
+author: Vignessh
 description: >- # this means to ignore newlines until "baseurl:"
-  My thoughts on programming, motorcycles and life in general
+  "My thoughts on programming, motorcycles and life in general"
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://vignessh.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+
+# Optional feature
+show_social_icons: true
+
+# Social icons
 twitter_username: vignesshv
 github_username:  vignessh
-instagram_username: vignesshv
+disqus_shortname: vignessh
 linkedin_username: vignesshv
 flickr_username: vignessh
-youtube_username: vignessh
+instagram_username: vignesshv
 
-markdown: kramdown
+header_pages:
+ - archive.html
+ - tags.html
+ - about.md
+show_post_footers: true
+
+# Linkblog (external-url)
+# linkblog:
+#   permalink_label: "&#8734;"
+#   permalink_label_feed: "&#9875; Permalink"
+#   linkpost:
+#     marker: "&rarr;"
+
+# UI Text
+text:
+  pagination:
+    newer: 'Newer'
+    older: 'Older'
+  post:
+    updated:        'Updated'
+    minute_read:    'minute read'
+    related_posts:  'Related Posts'
+  index:
+    coming_soon: 'Coming soon...'
+  og_locale: 'en_US'
+
+# Octopress 2-style excerpts
+excerpt_separator: "<!-- more -->"
+excerpt_link: "Read on &rarr;"
 
 # Build settings
 theme: minima
 plugins:
   - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+markdown: kramdown
+kramdown:
+  smart_quotes: ["apos", "apos", "quot", "quot"]  # Disable smart-quotes
+
+permalink: /blog/:year/:month/:day/:title/  # Octopress 2-style permalink
+paginate: 3
+paginate_path: "/blog/page/:num"
+sass:
+  style: compressed
 
 # Exclude from processing.
-# The following items will not be processed, by default.
-# Any item listed under the `exclude:` key here will be automatically added to
-# the internal "default list".
-#
-# Excluded items can be processed by explicitly listing the directories or
-# their entries' file path in the `include:` list.
-#
-# exclude:
-#   - .sass-cache/
-#   - .jekyll-cache/
-#   - gemfiles/
-#   - Gemfile
-#   - Gemfile.lock
-#   - node_modules/
-#   - vendor/bundle/
-#   - vendor/cache/
-#   - vendor/gems/
-#   - vendor/ruby/
+# The following items will not be processed, by default. Create a custom list
+# to override the default setting.
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - script/
+  - vendor/
+  - LICENSE.txt
+  - README.md
