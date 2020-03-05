@@ -1,4 +1,0 @@
-#!/bin/sh
-pushd "$(git rev-parse --show-toplevel)/_site"
-git push master
-popd
