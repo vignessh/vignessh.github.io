@@ -1,10 +1,10 @@
-var CACHE_NAME = "pixyll2-20200305170948";
+var CACHE_NAME = "pixyll2-20200305133246";
 
 self.addEventListener("install", function(e) {
   e.waitUntil(
     caches.open(CACHE_NAME).then(function(cache) {
       return cache.addAll([
-        "/css/pixyll.css?202003051709",
+        "/css/pixyll.css?202003051332",
         "/"
       ]);
     })
