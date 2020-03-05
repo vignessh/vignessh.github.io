@@ -1,0 +1,3 @@
+#!/bin/sh
+rm -f .jekyll-metadata
+bundle exec jekyll serve --watch --incremental --drafts
