@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Using Castle TypeFactory facility &#8211; Thoughts</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="&quot;My thoughts on programming, motorcycles and life in general&quot;">
+    <meta name="robots" content="all">
+    <meta name="author" content="Vignessh">
+    
+    
+    <link rel="canonical" href="https://vignessh.github.io/blog/2013/04/28/using-castle-typefactory-facility/">
+    <link rel="alternate" type="application/atom" title="Thoughts" href="/atom.xml" />
+    <link href="/favicon.png" rel="icon">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?202003051709" type="text/css">
+    <link href='/stylesheets/all-1c077b1cd46217694f3a51a04e556ecf.css' media='all' rel='stylesheet' type='text/css'>
+
+<!-- Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- MathJax -->
+    
+
+    <!-- Verifications -->
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Using Castle TypeFactory facility">
+    <meta property="og:description" content="&quot;My thoughts on programming, motorcycles and life in general&quot;">
+    <meta property="og:url" content="https://vignessh.github.io/blog/2013/04/28/using-castle-typefactory-facility/">
+    <meta property="og:site_name" content="Thoughts">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@vignesshv" />
+        <meta name="twitter:creator" content="@vignesshv" />
+    
+    <meta name="twitter:title" content="Using Castle TypeFactory facility" />
+    <meta name="twitter:description" content=""My thoughts on programming, motorcycles and life in general"" />
+    <meta name="twitter:url" content="https://vignessh.github.io/blog/2013/04/28/using-castle-typefactory-facility/" />
+    
+
+    
+</head>
+<body class="site">
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="https://vignessh.github.io" class="site-title">thoughts</a>
+      <nav class="site-nav">
+        <a href="/archive/">Archive</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/tags/">Tags</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/about/">About</a>
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/vignessh"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-twitter" href="https://twitter.com/vignesshv"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-linkedin" href="https://www.linkedin.com/in/vignesshv"></a>
+    
+    
+    
+    
+    
+    
+      <a class="fa fa-instagram" href="https://www.instagram.com/vignesshv"></a>
+    
+    
+      <a class="fa fa-flickr" href="https://www.flickr.com/photos/vignessh"></a>
+    
+    
+    
+    <a class="fa fa-rss" href="/atom.xml"></a>
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+      
+    </div>
+  </div>
+</header>
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+
+<div class="post-header mb2">
+  <h1>
+  
+    Using Castle TypeFactory facility
+  
+  </h1>
+  <span class="post-meta">2013-04-28 17:40:00 +0530</span><br>
+  
+  <span class="post-meta small">
+  
+    3 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p>Recently we ran into a problem with unit testing a piece of C# code because of the way the objects were created within the class under test. We were using Castle Windsor to inject the dependencies already but this particular situation was troublesome for us.
+<!--more--></p>
+
+<p>Consider the following sample code:</p>
+
+<figure class="code-highlight-figure"><figcaption class="code-highlight-caption"><span class="code-highlight-caption-title">AccountFinder.cs</span></figcaption><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="k">public</span> <span class="k">class</span> <span class="nc">AccountFinder</span>
+</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="p">&#x7b;</span>
+</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="k">private</span> <span class="n">IAccountRepository</span> <span class="n">repository</span><span class="p">;</span>
+</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="k">public</span> <span class="nf">AccountFinder</span><span class="p">(</span><span class="n">IAccountRepository</span> <span class="n">repository</span><span class="p">)</span>
+</div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="p">&#x7b;</span>
+</div></div><div data-line="7" class="code-highlight-row numbered"><div class="code-highlight-line">		<span class="k">this</span><span class="p">.</span><span class="n">repository</span> <span class="p">=</span> <span class="n">repository</span><span class="p">;</span>
+</div></div><div data-line="8" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="p">&#x7d;</span>
+</div></div><div data-line="9" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="10" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="k">public</span> <span class="n">Account</span> <span class="nf">Find</span><span class="p">(</span><span class="n">SearchCriteria</span> <span class="n">criteria</span><span class="p">)</span>
+</div></div><div data-line="11" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="p">&#x7b;</span>
+</div></div><div data-line="12" class="code-highlight-row numbered"><div class="code-highlight-line">		<span class="kt">var</span> <span class="n">searchStrategy</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">AccountSearchStrategyBuilder</span><span class="p">(</span><span class="n">repository</span><span class="p">).</span><span class="nf">Create</span><span class="p">(</span><span class="n">criteria</span><span class="p">);</span>
+</div></div><div data-line="13" class="code-highlight-row numbered"><div class="code-highlight-line">		<span class="k">return</span> <span class="n">searchStrategy</span><span class="p">.</span><span class="nf">Find</span><span class="p">(</span><span class="n">criteria</span><span class="p">);</span>
+</div></div><div data-line="14" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="p">&#x7d;</span>
+</div></div><div data-line="15" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="p">&#x7d;</span></div></div></pre></div></figure>
+
+<p>The <code class="language-plaintext highlighter-rouge">AccountFinder</code> depends on the following bit of code to create the right kind of strategy.</p>
+
+<figure class="code-highlight-figure"><figcaption class="code-highlight-caption"><span class="code-highlight-caption-title">AccountSearchStrategyBuilder.cs</span></figcaption><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="k">public</span> <span class="k">class</span> <span class="nc">AccountSearchStrategyBuilder</span>
+</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="p">&#x7b;</span>
+</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="k">private</span> <span class="n">IAccountRepository</span> <span class="n">repository</span><span class="p">;</span>
+</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="k">public</span> <span class="nf">AccountSearchStrategyBuilder</span><span class="p">(</span><span class="n">IAccountRepository</span> <span class="n">repository</span><span class="p">)</span>
+</div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="p">&#x7b;</span>
+</div></div><div data-line="7" class="code-highlight-row numbered"><div class="code-highlight-line">		<span class="k">this</span><span class="p">.</span><span class="n">repository</span> <span class="p">=</span> <span class="n">repository</span><span class="p">;</span>
+</div></div><div data-line="8" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="p">&#x7d;</span>
+</div></div><div data-line="9" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="10" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="k">public</span> <span class="n">AccountSearchStrategy</span> <span class="nf">Create</span><span class="p">(</span><span class="n">SearchCriteria</span> <span class="n">criteria</span><span class="p">)</span>
+</div></div><div data-line="11" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="p">&#x7b;</span>
+</div></div><div data-line="12" class="code-highlight-row numbered"><div class="code-highlight-line">		<span class="k">if</span> <span class="p">(</span><span class="n">critera</span><span class="p">.</span><span class="n">CustomerId</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+</div></div><div data-line="13" class="code-highlight-row numbered"><div class="code-highlight-line">			<span class="k">return</span> <span class="k">new</span> <span class="nf">AccountSearchByCustomerIdStrategy</span><span class="p">(</span><span class="n">repository</span><span class="p">);</span>
+</div></div><div data-line="14" class="code-highlight-row numbered"><div class="code-highlight-line">		<span class="k">return</span> <span class="k">new</span> <span class="nf">DefaultAccountSearchStrategy</span><span class="p">(</span><span class="n">repository</span><span class="p">);</span>
+</div></div><div data-line="15" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="p">&#x7d;</span>
+</div></div><div data-line="16" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="p">&#x7d;</span></div></div></pre></div></figure>
+
+<p>As you can see in the <code class="language-plaintext highlighter-rouge">AccountSearchStrategyBuilder</code> implementation, we end up creating the instances of the strategies themselves because we can decide on the type of the strategy to create only after we inspect the <code class="language-plaintext highlighter-rouge">SearchCriteria</code>. So, that implies testing the <code class="language-plaintext highlighter-rouge">AccountSearchStrategyBuilder</code> would mean creation of the various implementations even though we do not really need them. And the builder needs to be injected with all the dependencies that are required by the individual strategy implementations. Yikes!!</p>
+
+<p>So how do we solve the problem? Castle Windsor has a <a href="https://github.com/castleproject/Windsor/blob/master/docs/typed-factory-facility.md">facility</a> specifically to address this particular problem. The idea is we delegate the creational responsibility to the container whilst still being able to select a particular implementation based on the input available to us at runtime.</p>
+
+<p>The new implementation of the StrategyBuilder looks like</p>
+
+<figure class="code-highlight-figure"><figcaption class="code-highlight-caption"><span class="code-highlight-caption-title">AccountSearchStrategySelector.cs</span></figcaption><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="k">public</span> <span class="k">class</span> <span class="nc">AccountSearchStrategySelector</span> <span class="p">:</span> <span class="n">DefaultTypedFactoryComponentSelector</span>
+</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="p">&#x7b;</span>
+</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="k">protected</span> <span class="k">override</span> <span class="n">Type</span> <span class="nf">GetComponentType</span><span class="p">(</span><span class="n">MethodInfo</span> <span class="n">method</span><span class="p">,</span> <span class="kt">object</span><span class="p">[]</span> <span class="n">arguments</span><span class="p">)</span>
+</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="p">&#x7b;</span>
+</div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line">		<span class="kt">var</span> <span class="n">searchCriteria</span> <span class="p">=</span> <span class="p">(</span><span class="n">SearchCriteria</span><span class="p">)</span> <span class="n">arguments</span><span class="p">[</span><span class="m">0</span><span class="p">];</span>
+</div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line">		<span class="k">if</span> <span class="p">(</span><span class="n">searchCriteria</span><span class="p">.</span><span class="n">CustomerId</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+</div></div><div data-line="7" class="code-highlight-row numbered"><div class="code-highlight-line">			<span class="k">return</span> <span class="k">typeof</span><span class="p">(</span><span class="n">AccountSearchByCustomerIdStrategy</span><span class="p">);</span>
+</div></div><div data-line="8" class="code-highlight-row numbered"><div class="code-highlight-line">		<span class="k">return</span> <span class="k">typeof</span><span class="p">(</span><span class="n">DefaultAccountSearchStrategy</span><span class="p">);</span>
+</div></div><div data-line="9" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="p">&#x7d;</span>
+</div></div><div data-line="10" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="p">&#x7d;</span></div></div></pre></div></figure>
+<p>This way, we are separating the responsibility clearly - the creational logic of wiring in the right dependencies is not expressed in our code. It stays with Windsor. But how do we use this in our <code class="language-plaintext highlighter-rouge">AccountFinder</code> code? Here is how</p>
+
+<p>First we need an interface that Windsor can implement for the <code class="language-plaintext highlighter-rouge">AccountSearchStrategySelector</code></p>
+
+<figure class="code-highlight-figure"><figcaption class="code-highlight-caption"><span class="code-highlight-caption-title">IAccountSearchStrategyBuilder.cs</span></figcaption><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="k">public</span> <span class="k">interface</span> <span class="nc">IAccountSearchStrategyBuilder</span>
+</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="p">&#x7b;</span>
+</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="n">IAccountSearchStrategy</span> <span class="nf">Create</span><span class="p">(</span><span class="n">SearchCriteria</span> <span class="n">criteria</span><span class="p">);</span>
+</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="p">&#x7d;</span></div></div></pre></div></figure>
+
+<p>This interface will not have an implementation in our codebase. It is purely used by Castle Windsor to generate a proxy which can be used in our <code class="language-plaintext highlighter-rouge">AccountFinder</code> implementation.</p>
+
+<p>Our Castle Windsor configuration now looks like below:</p>
+
+<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="kt">var</span> <span class="n">container</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">WindsorContainer</span><span class="p">();</span>
+</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">container</span><span class="p">.</span><span class="n">AddFacility</span><span class="p">&lt;</span><span class="n">TypedFactoryFacility</span><span class="p">&gt;();</span>
+</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">container</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="n">Component</span><span class="p">.</span><span class="n">For</span><span class="p">&lt;</span><span class="n">IAccountSearchStrategyBuilder</span><span class="p">&gt;().</span><span class="nf">AsFactory</span><span class="p">(</span><span class="n">f</span> <span class="p">=&gt;</span> <span class="n">f</span><span class="p">.</span><span class="n">SelectWith</span><span class="p">&lt;</span><span class="n">AccountSearchStrategySelector</span><span class="p">&gt;()));</span>
+</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="n">container</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="n">Component</span><span class="p">.</span><span class="n">For</span><span class="p">&lt;</span><span class="n">AccountSearchStrategySelector</span><span class="p">,</span> <span class="n">ITypedFactoryComponentSelector</span><span class="p">&gt;());</span></div></div></pre></div></figure>
+
+<p>We are basically registering the <code class="language-plaintext highlighter-rouge">TypedFactoryFacility</code> with the container and then telling Windsor to use that factory to select an implementation type using the <code class="language-plaintext highlighter-rouge">.AsFactory</code> extension method when registering the <code class="language-plaintext highlighter-rouge">IAccountSearchStrategyBuilder</code>.</p>
+
+<p>The newer version of <code class="language-plaintext highlighter-rouge">AccountFinder</code> looks like below</p>
+
+<figure class="code-highlight-figure"><figcaption class="code-highlight-caption"><span class="code-highlight-caption-title">AccountFinder.cs</span></figcaption><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="k">public</span> <span class="k">class</span> <span class="nc">AccountFinder</span>
+</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="p">&#x7b;</span>
+</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="k">private</span> <span class="n">IAccountRepository</span> <span class="n">repository</span><span class="p">;</span>
+</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="k">private</span> <span class="n">IAccountSearchStrategyBuilder</span> <span class="n">searchStrategyBuilder</span><span class="p">;</span>
+</div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="k">public</span> <span class="nf">AccountFinder</span><span class="p">(</span><span class="n">IAccountRepository</span> <span class="n">repository</span><span class="p">,</span> <span class="n">IAccountSearchStrategyBuilder</span> <span class="n">searchStrategyBuilder</span><span class="p">)</span>
+</div></div><div data-line="7" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="p">&#x7b;</span>
+</div></div><div data-line="8" class="code-highlight-row numbered"><div class="code-highlight-line">		<span class="k">this</span><span class="p">.</span><span class="n">repository</span> <span class="p">=</span> <span class="n">repository</span><span class="p">;</span>
+</div></div><div data-line="9" class="code-highlight-row numbered"><div class="code-highlight-line">		<span class="k">this</span><span class="p">.</span><span class="n">searchStrategyBuilder</span> <span class="p">=</span> <span class="n">searchStrategyBuilder</span><span class="p">;</span>
+</div></div><div data-line="10" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="p">&#x7d;</span>
+</div></div><div data-line="11" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="12" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="k">public</span> <span class="n">Account</span> <span class="nf">Find</span><span class="p">(</span><span class="n">SearchCriteria</span> <span class="n">criteria</span><span class="p">)</span>
+</div></div><div data-line="13" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="p">&#x7b;</span>
+</div></div><div data-line="14" class="code-highlight-row numbered"><div class="code-highlight-line">		<span class="kt">var</span> <span class="n">searchStrategy</span> <span class="p">=</span> <span class="n">searchStrategyBuilder</span><span class="p">.</span><span class="nf">Create</span><span class="p">(</span><span class="n">criteria</span><span class="p">);</span>
+</div></div><div data-line="15" class="code-highlight-row numbered"><div class="code-highlight-line">		<span class="k">return</span> <span class="n">searchStrategy</span><span class="p">.</span><span class="nf">Find</span><span class="p">(</span><span class="n">criteria</span><span class="p">);</span>
+</div></div><div data-line="16" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="p">&#x7d;</span>
+</div></div><div data-line="17" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="p">&#x7d;</span></div></div></pre></div></figure>
+
+<p>This way, we can test our individual classes easily by supplying mock/stubs instead of dealing with live instances that might require complicated setup.</p>
+
+<h4 id="summary">Summary</h4>
+
+<p>Use this facility when you need to choose amongst a bunch of implementations based on input received at runtime. Next time you end up <a href="http://www.urbandictionary.com/define.php?term=yak+shaving">Yak shaving</a>, understand why you ended up doing it and see what can be done to ease the pain. And yeah, reading the manual helps too!</p>
+
+</article>
+
+
+
+
+  <div class="post-footer">
+
+
+<span class="post-meta">
+  <span class="byline author vcard">Posted by <span class="fn">Vignessh</span></span>
+</span>
+
+
+
+
+
+
+
+
+
+
+ &bull; <span class="post-meta">
+  <time datetime="2013-04-28T17:40:00+05:30" pubdate data-updated="true">2013-04-28 17:40:00 +0530</time>
+</span>
+
+
+
+</div>
+
+
+
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname  = 'vignessh';
+    var disqus_identifier = 'https://vignessh.github.io/blog/2013/04/28/using-castle-typefactory-facility/';
+    var disqus_title      = "Using Castle TypeFactory facility";
+
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      &copy; 2020 Vignessh.
+      Powered by <a href="https://jekyllrb.com/">Jekyll</a>
+      and <a href="https://github.com/octopress/octopress">Octopress 3</a>.
+      Theme based on <a href="https://github.com/johnotander/pixyll">Pixyll</a>.
+    </small>
+  </div>
+</footer>
+</body>
+</html>

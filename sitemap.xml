@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url>
+<loc>https://vignessh.github.io/blog/2013/04/26/laziness-a-human-quality/</loc>
+<lastmod>2013-04-26T14:25:00+05:30</lastmod>
+</url>
+<url>
+<loc>https://vignessh.github.io/blog/2013/04/27/learning-functional-programming/</loc>
+<lastmod>2013-04-27T16:03:00+05:30</lastmod>
+</url>
+<url>
+<loc>https://vignessh.github.io/blog/2013/04/28/using-castle-typefactory-facility/</loc>
+<lastmod>2013-04-28T17:40:00+05:30</lastmod>
+</url>
+<url>
+<loc>https://vignessh.github.io/blog/2013/05/10/using-dependency-injection-correctly/</loc>
+<lastmod>2013-05-10T16:33:00+05:30</lastmod>
+</url>
+<url>
+<loc>https://vignessh.github.io/404/</loc>
+</url>
+<url>
+<loc>https://vignessh.github.io/about/</loc>
+</url>
+<url>
+<loc>https://vignessh.github.io/archive/</loc>
+</url>
+<url>
+<loc>https://vignessh.github.io/</loc>
+</url>
+<url>
+<loc>https://vignessh.github.io/tags/</loc>
+</url>
+</urlset>

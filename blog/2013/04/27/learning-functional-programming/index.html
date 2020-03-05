@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Learning functional programming - Part 1 &#8211; Thoughts</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="&quot;My thoughts on programming, motorcycles and life in general&quot;">
+    <meta name="robots" content="all">
+    <meta name="author" content="Vignessh">
+    
+    
+    <link rel="canonical" href="https://vignessh.github.io/blog/2013/04/27/learning-functional-programming/">
+    <link rel="alternate" type="application/atom" title="Thoughts" href="/atom.xml" />
+    <link href="/favicon.png" rel="icon">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?202003051709" type="text/css">
+    <link href='/stylesheets/all-1c077b1cd46217694f3a51a04e556ecf.css' media='all' rel='stylesheet' type='text/css'>
+
+<!-- Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- MathJax -->
+    
+
+    <!-- Verifications -->
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Learning functional programming - Part 1">
+    <meta property="og:description" content="&quot;My thoughts on programming, motorcycles and life in general&quot;">
+    <meta property="og:url" content="https://vignessh.github.io/blog/2013/04/27/learning-functional-programming/">
+    <meta property="og:site_name" content="Thoughts">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@vignesshv" />
+        <meta name="twitter:creator" content="@vignesshv" />
+    
+    <meta name="twitter:title" content="Learning functional programming - Part 1" />
+    <meta name="twitter:description" content=""My thoughts on programming, motorcycles and life in general"" />
+    <meta name="twitter:url" content="https://vignessh.github.io/blog/2013/04/27/learning-functional-programming/" />
+    
+
+    
+</head>
+<body class="site">
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="https://vignessh.github.io" class="site-title">thoughts</a>
+      <nav class="site-nav">
+        <a href="/archive/">Archive</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/tags/">Tags</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/about/">About</a>
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/vignessh"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-twitter" href="https://twitter.com/vignesshv"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-linkedin" href="https://www.linkedin.com/in/vignesshv"></a>
+    
+    
+    
+    
+    
+    
+      <a class="fa fa-instagram" href="https://www.instagram.com/vignesshv"></a>
+    
+    
+      <a class="fa fa-flickr" href="https://www.flickr.com/photos/vignessh"></a>
+    
+    
+    
+    <a class="fa fa-rss" href="/atom.xml"></a>
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+      
+    </div>
+  </div>
+</header>
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+
+<div class="post-header mb2">
+  <h1>
+  
+    Learning functional programming - Part 1
+  
+  </h1>
+  <span class="post-meta">2013-04-27 16:03:00 +0530</span><br>
+  
+  <span class="post-meta small">
+  
+    1 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p>Ever since I saw Rich Hickey's <a href="http://www.infoq.com/presentations/Simple-Made-Easy">Simple Made Easy</a> presentation, I have been wanting to learn <a href="http://clojure.org">Clojure</a>. For the simple fact that it was designed by someone who has spent enough time thinking about problems faced with current generation of programming languages and the limitations they impose. <!--more--></p>
+
+<p>I've been intrigued by functional programming paradigm ever since my good friend enticed me to go through the book <a href="http://mitpress.mit.edu/books/little-schemer"><strong>The Little Schemer</strong></a>. (If you have not read it yet, please do, it is a fascinating intro into understanding recursion). That journey started off a frantic rush which then tapered off after a while owing to various reasons. Now after going through Rich's presentation and after having spent a good part of the last 5 yrs building .NET based enterprisey apps, I'm beginning to feel the need to jump back to learning functional programming principles better. The experiments with C#'s Linq helped understand the principles to a great extent.</p>
+
+<p>For example, instead of</p>
+
+<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="kt">var</span> <span class="n">tasks</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">Task</span><span class="p">&gt;();</span>
+</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="k">foreach</span><span class="p">(</span><span class="kt">var</span> <span class="n">user</span> <span class="k">in</span> <span class="n">users</span><span class="p">)</span>
+</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="p">&#x7b;</span>
+</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="kt">var</span> <span class="n">userTasks</span> <span class="p">=</span> <span class="n">Tasks</span><span class="p">.</span><span class="nf">For</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="n">Id</span><span class="p">);</span>
+</div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="n">tasks</span><span class="p">.</span><span class="nf">AddRange</span><span class="p">(</span><span class="n">userTasks</span><span class="p">);</span>
+</div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="p">&#x7d;</span>
+</div></div><div data-line="7" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="k">return</span> <span class="n">tasks</span><span class="p">;</span></div></div></pre></div></figure>
+
+<p>prefer something like</p>
+
+<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="k">return</span> <span class="n">users</span><span class="p">.</span><span class="nf">Select</span><span class="p">(</span><span class="n">user</span> <span class="p">=&gt;</span> <span class="n">Tasks</span><span class="p">.</span><span class="nf">For</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="n">Id</span><span class="p">)).</span><span class="nf">SelectMany</span><span class="p">(</span><span class="n">task</span> <span class="p">=&gt;</span> <span class="n">task</span><span class="p">).</span><span class="nf">ToList</span><span class="p">();</span></div></div></pre></div></figure>
+
+<p>This might seem like syntactic sugar at first glance. That is because the functional paradigm have been transplanted onto a object oriented language like C# using Linq. In a pure functional language like <a href="http://clojure.org">Clojure</a> or <a href="http://www.haskell.org">Haskell</a>, the syntax would feel more natural. Interestingly, the Linq implementation is purely via extension methods and not by extending the <code class="language-plaintext highlighter-rouge">IEnumerable&lt;T&gt;</code> interface. We'll explore this bit in a follow up post.</p>
+
+</article>
+
+
+
+
+  <div class="post-footer">
+
+
+<span class="post-meta">
+  <span class="byline author vcard">Posted by <span class="fn">Vignessh</span></span>
+</span>
+
+
+
+
+
+
+
+
+
+
+ &bull; <span class="post-meta">
+  <time datetime="2013-04-27T16:03:00+05:30" pubdate data-updated="true">2013-04-27 16:03:00 +0530</time>
+</span>
+
+
+
+</div>
+
+
+
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname  = 'vignessh';
+    var disqus_identifier = 'https://vignessh.github.io/blog/2013/04/27/learning-functional-programming/';
+    var disqus_title      = "Learning functional programming - Part 1";
+
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      &copy; 2020 Vignessh.
+      Powered by <a href="https://jekyllrb.com/">Jekyll</a>
+      and <a href="https://github.com/octopress/octopress">Octopress 3</a>.
+      Theme based on <a href="https://github.com/johnotander/pixyll">Pixyll</a>.
+    </small>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Using dependency injection correctly &#8211; Thoughts</title>
+    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="&quot;My thoughts on programming, motorcycles and life in general&quot;">
+    <meta name="robots" content="all">
+    <meta name="author" content="Vignessh">
+    
+    
+    <link rel="canonical" href="https://vignessh.github.io/blog/2013/05/10/using-dependency-injection-correctly/">
+    <link rel="alternate" type="application/atom" title="Thoughts" href="/atom.xml" />
+    <link href="/favicon.png" rel="icon">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?202003051709" type="text/css">
+    <link href='/stylesheets/all-1c077b1cd46217694f3a51a04e556ecf.css' media='all' rel='stylesheet' type='text/css'>
+
+<!-- Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- MathJax -->
+    
+
+    <!-- Verifications -->
+    
+    
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Using dependency injection correctly">
+    <meta property="og:description" content="&quot;My thoughts on programming, motorcycles and life in general&quot;">
+    <meta property="og:url" content="https://vignessh.github.io/blog/2013/05/10/using-dependency-injection-correctly/">
+    <meta property="og:site_name" content="Thoughts">
+    
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+        <meta name="twitter:site" content="@vignesshv" />
+        <meta name="twitter:creator" content="@vignesshv" />
+    
+    <meta name="twitter:title" content="Using dependency injection correctly" />
+    <meta name="twitter:description" content=""My thoughts on programming, motorcycles and life in general"" />
+    <meta name="twitter:url" content="https://vignessh.github.io/blog/2013/05/10/using-dependency-injection-correctly/" />
+    
+
+    
+</head>
+<body class="site">
+
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="https://vignessh.github.io" class="site-title">thoughts</a>
+      <nav class="site-nav">
+        <a href="/archive/">Archive</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/tags/">Tags</a>
+    
+
+    
+
+    
+    
+    
+    
+        <a href="/about/">About</a>
+      </nav>
+      <div class="clearfix"></div>
+      
+        <div class="social-icons">
+  <div class="social-icons-right">
+    
+      <a class="fa fa-github" href="https://github.com/vignessh"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-twitter" href="https://twitter.com/vignesshv"></a>
+    
+    
+    
+    
+    
+      <a class="fa fa-linkedin" href="https://www.linkedin.com/in/vignesshv"></a>
+    
+    
+    
+    
+    
+    
+      <a class="fa fa-instagram" href="https://www.instagram.com/vignesshv"></a>
+    
+    
+      <a class="fa fa-flickr" href="https://www.flickr.com/photos/vignessh"></a>
+    
+    
+    
+    <a class="fa fa-rss" href="/atom.xml"></a>
+    
+  </div>
+  <div class="right">
+    
+    
+    
+  </div>
+</div>
+<div class="clearfix"></div>
+      
+    </div>
+  </div>
+</header>
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+
+<div class="post-header mb2">
+  <h1>
+  
+    Using dependency injection correctly
+  
+  </h1>
+  <span class="post-meta">2013-05-10 16:33:00 +0530</span><br>
+  
+  <span class="post-meta small">
+  
+    1 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p>Even though dependency injection is a better understood concept now than in the past, there is still code being written that does not keep the principle in mind. The problem seems to be around recognizing which dependencies are needed when constructing the object and which ones need resolution at runtime.</p>
+
+<!-- more -->
+<p>To better explain the problem, here is a sample piece of code.</p>
+
+<figure class="code-highlight-figure"><figcaption class="code-highlight-caption"><span class="code-highlight-caption-title">BusinessProfileFinder.cs</span></figcaption><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="k">public</span> <span class="k">class</span> <span class="nc">BusinessProfileFinder</span>
+</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="p">&#x7b;</span>
+</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="k">private</span> <span class="k">readonly</span> <span class="n">IEnquiryService</span> <span class="n">enquiryService</span><span class="p">;</span>
+</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="k">private</span> <span class="k">readonly</span> <span class="n">Parameter</span> <span class="n">parameter</span><span class="p">;</span>
+</div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="k">private</span> <span class="k">readonly</span> <span class="kt">string</span> <span class="n">businessReferenceCode</span><span class="p">;</span>
+</div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="7" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="k">public</span> <span class="nf">BusinessProfileFinder</span><span class="p">(</span><span class="n">IEnquiryService</span> <span class="n">enquiryService</span><span class="p">,</span> <span class="n">Parameter</span> <span class="n">parameter</span><span class="p">,</span> <span class="kt">string</span> <span class="n">businessReferenceCode</span><span class="p">)</span>
+</div></div><div data-line="8" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="p">&#x7b;</span>
+</div></div><div data-line="9" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="k">this</span><span class="p">.</span><span class="n">enquiryService</span> <span class="p">=</span> <span class="n">enquiryService</span><span class="p">;</span>
+</div></div><div data-line="10" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="k">this</span><span class="p">.</span><span class="n">parameter</span> <span class="p">=</span> <span class="n">parameter</span><span class="p">;</span>
+</div></div><div data-line="11" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="k">this</span><span class="p">.</span><span class="n">businessReferenceCode</span> <span class="p">=</span> <span class="n">businessReferenceCode</span><span class="p">;</span>
+</div></div><div data-line="12" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="p">&#x7d;</span>
+</div></div><div data-line="13" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="14" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="k">public</span> <span class="n">BusinessProfile</span> <span class="nf">Find</span><span class="p">()</span>
+</div></div><div data-line="15" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="p">&#x7b;</span>
+</div></div><div data-line="16" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="k">return</span> <span class="n">enquiryService</span><span class="p">.</span><span class="nf">Find</span><span class="p">(</span><span class="k">new</span> <span class="n">BusinessProfileRequest</span> <span class="p">&#x7b;</span><span class="n">Parameter</span> <span class="p">=</span> <span class="n">parameter</span><span class="p">,</span> <span class="n">ReferenceCode</span> <span class="p">=</span> <span class="n">businessReferenceCode</span><span class="p">&#x7d;);</span>
+</div></div><div data-line="17" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="p">&#x7d;</span>
+</div></div><div data-line="18" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="p">&#x7d;</span></div></div></pre></div></figure>
+
+<p>So this finder is just a wrapper over the actual service <code class="language-plaintext highlighter-rouge">EnquiryService</code> that is responsible for retrieving the <code class="language-plaintext highlighter-rouge">BusinessProfile</code> given certain parameters. At first glance, there is nothing really wrong with the way the above code has been written. But if you look closely, there are some issues. The constructor is taking arguments that are required for both construction as well as for the operation of this class.</p>
+
+<p>Because of this, the caller of this class cannot express this as a dependency when configuring the DI container. Instead it will need to instantiate it at runtime by itself. Thereby we lose the ability to wire up dependencies, as well lose the ability to test it without resorting to hacks.</p>
+
+<p>The same code could be re-written in a more test/dependency injection friendly way as below:</p>
+
+<figure class="code-highlight-figure"><figcaption class="code-highlight-caption"><span class="code-highlight-caption-title">BusinessProfileFinder.cs</span></figcaption><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="k">public</span> <span class="k">class</span> <span class="nc">BusinessProfileFinder</span>
+</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="p">&#x7b;</span>
+</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="k">private</span> <span class="k">readonly</span> <span class="n">IEnquiryService</span> <span class="n">enquiryService</span><span class="p">;</span>
+</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="k">public</span> <span class="nf">BusinessProfileFinder</span><span class="p">(</span><span class="n">IEnquiryService</span> <span class="n">enquiryService</span><span class="p">)</span>
+</div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="p">&#x7b;</span>
+</div></div><div data-line="7" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="k">this</span><span class="p">.</span><span class="n">enquiryService</span> <span class="p">=</span> <span class="n">enquiryService</span><span class="p">;</span>
+</div></div><div data-line="8" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="p">&#x7d;</span>
+</div></div><div data-line="9" class="code-highlight-row numbered"><div class="code-highlight-line"> </div></div><div data-line="10" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="k">public</span> <span class="n">BusinessProfile</span> <span class="nf">Find</span><span class="p">(</span><span class="n">Parameter</span> <span class="n">parameter</span><span class="p">,</span> <span class="kt">string</span> <span class="n">businessReferenceCode</span><span class="p">)</span>
+</div></div><div data-line="11" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="p">&#x7b;</span>
+</div></div><div data-line="12" class="code-highlight-row numbered"><div class="code-highlight-line">    <span class="k">return</span> <span class="n">enquiryService</span><span class="p">.</span><span class="nf">Find</span><span class="p">(</span><span class="k">new</span> <span class="n">BusinessProfileRequest</span> <span class="p">&#x7b;</span><span class="n">Parameter</span> <span class="p">=</span> <span class="n">parameter</span><span class="p">,</span> <span class="n">ReferenceCode</span> <span class="p">=</span> <span class="n">businessReferenceCode</span><span class="p">&#x7d;);</span>
+</div></div><div data-line="13" class="code-highlight-row numbered"><div class="code-highlight-line">  <span class="p">&#x7d;</span>
+</div></div><div data-line="14" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="p">&#x7d;</span></div></div></pre></div></figure>
+
+<p>Notice the change to the arguments to the constructor and the <code class="language-plaintext highlighter-rouge">Find</code> implementation. Looking at example, it becomes evident as to how writing test friendly code can also help with how dependencies are expressed and therefore help with design of the class under concern. It is important to understand the difference between dependencies that can be resolved during instantiation time vs. those that can only be resolved during run time.</p>
+
+</article>
+
+
+
+
+  <div class="post-footer">
+
+
+<span class="post-meta">
+  <span class="byline author vcard">Posted by <span class="fn">Vignessh</span></span>
+</span>
+
+
+
+
+
+
+
+
+
+
+ &bull; <span class="post-meta">
+  <time datetime="2013-05-10T16:33:00+05:30" pubdate data-updated="true">2013-05-10 16:33:00 +0530</time>
+</span>
+
+
+
+</div>
+
+
+
+
+
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    var disqus_shortname  = 'vignessh';
+    var disqus_identifier = 'https://vignessh.github.io/blog/2013/05/10/using-dependency-injection-correctly/';
+    var disqus_title      = "Using dependency injection correctly";
+
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+  <div class="measure">
+    <small>
+      &copy; 2020 Vignessh.
+      Powered by <a href="https://jekyllrb.com/">Jekyll</a>
+      and <a href="https://github.com/octopress/octopress">Octopress 3</a>.
+      Theme based on <a href="https://github.com/johnotander/pixyll">Pixyll</a>.
+    </small>
+  </div>
+</footer>
+</body>
+</html>
