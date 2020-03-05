@@ -73,7 +73,7 @@ kramdown:
   smart_quotes: ["apos", "apos", "quot", "quot"]  # Disable smart-quotes
 
 permalink: /blog/:year/:month/:day/:title/  # Octopress 2-style permalink
-paginate: 3
+paginate: 2
 paginate_path: "/blog/page/:num"
 sass:
   style: compressed
