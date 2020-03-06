@@ -175,25 +175,7 @@
 <!-- more -->
 <p>To better explain the problem, here is a sample piece of code.</p>
 
-<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><table class="rouge-table"><tbody><tr><td class="gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-</pre></td><td class="code"><pre><span class="k">public</span> <span class="k">class</span> <span class="nc">BusinessProfileFinder</span>
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">BusinessProfileFinder</span>
 <span class="p">{</span>
   <span class="k">private</span> <span class="k">readonly</span> <span class="n">IEnquiryService</span> <span class="n">enquiryService</span><span class="p">;</span>
   <span class="k">private</span> <span class="k">readonly</span> <span class="n">Parameter</span> <span class="n">parameter</span><span class="p">;</span>
@@ -211,7 +193,7 @@
     <span class="k">return</span> <span class="n">enquiryService</span><span class="p">.</span><span class="nf">Find</span><span class="p">(</span><span class="k">new</span> <span class="n">BusinessProfileRequest</span> <span class="p">{</span><span class="n">Parameter</span> <span class="p">=</span> <span class="n">parameter</span><span class="p">,</span> <span class="n">ReferenceCode</span> <span class="p">=</span> <span class="n">businessReferenceCode</span><span class="p">});</span>
   <span class="p">}</span>
 <span class="p">}</span>
-</pre></td></tr></tbody></table></code></pre></figure>
+</code></pre></div></div>
 
 <p>So this finder is just a wrapper over the actual service <code class="language-plaintext highlighter-rouge">EnquiryService</code> that is responsible for retrieving the <code class="language-plaintext highlighter-rouge">BusinessProfile</code> given certain parameters. At first glance, there is nothing really wrong with the way the above code has been written. But if you look closely, there are some issues. The constructor is taking arguments that are required for both construction as well as for the operation of this class.</p>
 
@@ -219,21 +201,7 @@
 
 <p>The same code could be re-written in a more test/dependency injection friendly way as below:</p>
 
-<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><table class="rouge-table"><tbody><tr><td class="gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-</pre></td><td class="code"><pre><span class="k">public</span> <span class="k">class</span> <span class="nc">BusinessProfileFinder</span>
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">BusinessProfileFinder</span>
 <span class="p">{</span>
   <span class="k">private</span> <span class="k">readonly</span> <span class="n">IEnquiryService</span> <span class="n">enquiryService</span><span class="p">;</span>
 
@@ -247,7 +215,7 @@
     <span class="k">return</span> <span class="n">enquiryService</span><span class="p">.</span><span class="nf">Find</span><span class="p">(</span><span class="k">new</span> <span class="n">BusinessProfileRequest</span> <span class="p">{</span><span class="n">Parameter</span> <span class="p">=</span> <span class="n">parameter</span><span class="p">,</span> <span class="n">ReferenceCode</span> <span class="p">=</span> <span class="n">businessReferenceCode</span><span class="p">});</span>
   <span class="p">}</span>
 <span class="p">}</span>
-</pre></td></tr></tbody></table></code></pre></figure>
+</code></pre></div></div>
 
 <p>Notice the change to the arguments to the constructor and the <code class="language-plaintext highlighter-rouge">Find</code> implementation. Looking at example, it becomes evident as to how writing test friendly code can also help with how dependencies are expressed and therefore help with design of the class under concern. It is important to understand the difference between dependencies that can be resolved during instantiation time vs. those that can only be resolved during run time.</p>
 

@@ -175,22 +175,7 @@
 
 <p>Consider the following sample code:</p>
 
-<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><table class="rouge-table"><tbody><tr><td class="gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-</pre></td><td class="code"><pre><span class="k">public</span> <span class="k">class</span> <span class="nc">AccountFinder</span>
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">AccountFinder</span>
 <span class="p">{</span>
 	<span class="k">private</span> <span class="n">IAccountRepository</span> <span class="n">repository</span><span class="p">;</span>
 
@@ -205,27 +190,11 @@
 		<span class="k">return</span> <span class="n">searchStrategy</span><span class="p">.</span><span class="nf">Find</span><span class="p">(</span><span class="n">criteria</span><span class="p">);</span>
 	<span class="p">}</span>
 <span class="p">}</span>
-</pre></td></tr></tbody></table></code></pre></figure>
+</code></pre></div></div>
 
 <p>The <code class="language-plaintext highlighter-rouge">AccountFinder</code> depends on the following bit of code to create the right kind of strategy.</p>
 
-<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><table class="rouge-table"><tbody><tr><td class="gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-</pre></td><td class="code"><pre><span class="k">public</span> <span class="k">class</span> <span class="nc">AccountSearchStrategyBuilder</span>
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">AccountSearchStrategyBuilder</span>
 <span class="p">{</span>
 	<span class="k">private</span> <span class="n">IAccountRepository</span> <span class="n">repository</span><span class="p">;</span>
 
@@ -241,7 +210,7 @@
 		<span class="k">return</span> <span class="k">new</span> <span class="nf">DefaultAccountSearchStrategy</span><span class="p">(</span><span class="n">repository</span><span class="p">);</span>
 	<span class="p">}</span>
 <span class="p">}</span>
-</pre></td></tr></tbody></table></code></pre></figure>
+</code></pre></div></div>
 
 <p>As you can see in the <code class="language-plaintext highlighter-rouge">AccountSearchStrategyBuilder</code> implementation, we end up creating the instances of the strategies themselves because we can decide on the type of the strategy to create only after we inspect the <code class="language-plaintext highlighter-rouge">SearchCriteria</code>. So, that implies testing the <code class="language-plaintext highlighter-rouge">AccountSearchStrategyBuilder</code> would mean creation of the various implementations even though we do not really need them. And the builder needs to be injected with all the dependencies that are required by the individual strategy implementations. Yikes!!</p>
 
@@ -249,17 +218,7 @@
 
 <p>The new implementation of the StrategyBuilder looks like</p>
 
-<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><table class="rouge-table"><tbody><tr><td class="gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-</pre></td><td class="code"><pre><span class="k">public</span> <span class="k">class</span> <span class="nc">AccountSearchStrategySelector</span> <span class="p">:</span> <span class="n">DefaultTypedFactoryComponentSelector</span>
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">AccountSearchStrategySelector</span> <span class="p">:</span> <span class="n">DefaultTypedFactoryComponentSelector</span>
 <span class="p">{</span>
 	<span class="k">protected</span> <span class="k">override</span> <span class="n">Type</span> <span class="nf">GetComponentType</span><span class="p">(</span><span class="n">MethodInfo</span> <span class="n">method</span><span class="p">,</span> <span class="kt">object</span><span class="p">[]</span> <span class="n">arguments</span><span class="p">)</span>
 	<span class="p">{</span>
@@ -269,58 +228,32 @@
 		<span class="k">return</span> <span class="k">typeof</span><span class="p">(</span><span class="n">DefaultAccountSearchStrategy</span><span class="p">);</span>
 	<span class="p">}</span>
 <span class="p">}</span>
-</pre></td></tr></tbody></table></code></pre></figure>
-
+</code></pre></div></div>
 <p>This way, we are separating the responsibility clearly - the creational logic of wiring in the right dependencies is not expressed in our code. It stays with Windsor. But how do we use this in our <code class="language-plaintext highlighter-rouge">AccountFinder</code> code? Here is how</p>
 
 <p>First we need an interface that Windsor can implement for the <code class="language-plaintext highlighter-rouge">AccountSearchStrategySelector</code></p>
 
-<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><table class="rouge-table"><tbody><tr><td class="gutter gl"><pre class="lineno">1
-2
-3
-4
-</pre></td><td class="code"><pre><span class="k">public</span> <span class="k">interface</span> <span class="nc">IAccountSearchStrategyBuilder</span>
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">interface</span> <span class="nc">IAccountSearchStrategyBuilder</span>
 <span class="p">{</span>
 	<span class="n">IAccountSearchStrategy</span> <span class="nf">Create</span><span class="p">(</span><span class="n">SearchCriteria</span> <span class="n">criteria</span><span class="p">);</span>
 <span class="p">}</span>
-</pre></td></tr></tbody></table></code></pre></figure>
+</code></pre></div></div>
 
 <p>This interface will not have an implementation in our codebase. It is purely used by Castle Windsor to generate a proxy which can be used in our <code class="language-plaintext highlighter-rouge">AccountFinder</code> implementation.</p>
 
 <p>Our Castle Windsor configuration now looks like below:</p>
 
-<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><table class="rouge-table"><tbody><tr><td class="gutter gl"><pre class="lineno">1
-2
-3
-4
-</pre></td><td class="code"><pre><span class="kt">var</span> <span class="n">container</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">WindsorContainer</span><span class="p">();</span>
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">var</span> <span class="n">container</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">WindsorContainer</span><span class="p">();</span>
 <span class="n">container</span><span class="p">.</span><span class="n">AddFacility</span><span class="p">&lt;</span><span class="n">TypedFactoryFacility</span><span class="p">&gt;();</span>
 <span class="n">container</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="n">Component</span><span class="p">.</span><span class="n">For</span><span class="p">&lt;</span><span class="n">IAccountSearchStrategyBuilder</span><span class="p">&gt;().</span><span class="nf">AsFactory</span><span class="p">(</span><span class="n">f</span> <span class="p">=&gt;</span> <span class="n">f</span><span class="p">.</span><span class="n">SelectWith</span><span class="p">&lt;</span><span class="n">AccountSearchStrategySelector</span><span class="p">&gt;()));</span>
 <span class="n">container</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="n">Component</span><span class="p">.</span><span class="n">For</span><span class="p">&lt;</span><span class="n">AccountSearchStrategySelector</span><span class="p">,</span> <span class="n">ITypedFactoryComponentSelector</span><span class="p">&gt;());</span>
-</pre></td></tr></tbody></table></code></pre></figure>
+</code></pre></div></div>
 
 <p>We are basically registering the <code class="language-plaintext highlighter-rouge">TypedFactoryFacility</code> with the container and then telling Windsor to use that factory to select an implementation type using the <code class="language-plaintext highlighter-rouge">.AsFactory</code> extension method when registering the <code class="language-plaintext highlighter-rouge">IAccountSearchStrategyBuilder</code>.</p>
 
 <p>The newer version of <code class="language-plaintext highlighter-rouge">AccountFinder</code> looks like below</p>
 
-<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><table class="rouge-table"><tbody><tr><td class="gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-</pre></td><td class="code"><pre><span class="k">public</span> <span class="k">class</span> <span class="nc">AccountFinder</span>
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">AccountFinder</span>
 <span class="p">{</span>
 	<span class="k">private</span> <span class="n">IAccountRepository</span> <span class="n">repository</span><span class="p">;</span>
 	<span class="k">private</span> <span class="n">IAccountSearchStrategyBuilder</span> <span class="n">searchStrategyBuilder</span><span class="p">;</span>
@@ -337,7 +270,7 @@
 		<span class="k">return</span> <span class="n">searchStrategy</span><span class="p">.</span><span class="nf">Find</span><span class="p">(</span><span class="n">criteria</span><span class="p">);</span>
 	<span class="p">}</span>
 <span class="p">}</span>
-</pre></td></tr></tbody></table></code></pre></figure>
+</code></pre></div></div>
 
 <p>This way, we can test our individual classes easily by supplying mock/stubs instead of dealing with live instances that might require complicated setup.</p>
 

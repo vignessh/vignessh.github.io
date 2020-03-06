@@ -170,35 +170,27 @@
 </div>
 
   <div class="post-body">
-    <p>Ever since I saw Rich Hickey's <a href="http://www.infoq.com/presentations/Simple-Made-Easy">Simple Made Easy</a> presentation, I have been wanting to learn <a href="http://clojure.org">Clojure</a>. For the simple fact that it was designed by someone who has spent enough time thinking about problems faced with current generation of programming languages and the limitations they impose. <!--more--></p>
+    <p>Ever since I saw Rich Hickey’s <a href="http://www.infoq.com/presentations/Simple-Made-Easy">Simple Made Easy</a> presentation, I have been wanting to learn <a href="http://clojure.org">Clojure</a>. For the simple fact that it was designed by someone who has spent enough time thinking about problems faced with current generation of programming languages and the limitations they impose. <!--more--></p>
 
-<p>I've been intrigued by functional programming paradigm ever since my good friend enticed me to go through the book <a href="http://mitpress.mit.edu/books/little-schemer"><strong>The Little Schemer</strong></a>. (If you have not read it yet, please do, it is a fascinating intro into understanding recursion). That journey started off a frantic rush which then tapered off after a while owing to various reasons. Now after going through Rich's presentation and after having spent a good part of the last 5 yrs building .NET based enterprisey apps, I'm beginning to feel the need to jump back to learning functional programming principles better. The experiments with C#'s Linq helped understand the principles to a great extent.</p>
+<p>I’ve been intrigued by functional programming paradigm ever since my good friend enticed me to go through the book <a href="http://mitpress.mit.edu/books/little-schemer"><strong>The Little Schemer</strong></a>. (If you have not read it yet, please do, it is a fascinating intro into understanding recursion). That journey started off a frantic rush which then tapered off after a while owing to various reasons. Now after going through Rich’s presentation and after having spent a good part of the last 5 yrs building .NET based enterprisey apps, I’m beginning to feel the need to jump back to learning functional programming principles better. The experiments with C#’s Linq helped understand the principles to a great extent.</p>
 
 <p>For example, instead of</p>
 
-<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><table class="rouge-table"><tbody><tr><td class="gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-</pre></td><td class="code"><pre><span class="kt">var</span> <span class="n">tasks</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">Task</span><span class="p">&gt;();</span>
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">var</span> <span class="n">tasks</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">Task</span><span class="p">&gt;();</span>
 <span class="k">foreach</span><span class="p">(</span><span class="kt">var</span> <span class="n">user</span> <span class="k">in</span> <span class="n">users</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="kt">var</span> <span class="n">userTasks</span> <span class="p">=</span> <span class="n">Tasks</span><span class="p">.</span><span class="nf">For</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="n">Id</span><span class="p">);</span>
 	<span class="n">tasks</span><span class="p">.</span><span class="nf">AddRange</span><span class="p">(</span><span class="n">userTasks</span><span class="p">);</span>
 <span class="p">}</span>
 <span class="k">return</span> <span class="n">tasks</span><span class="p">;</span>
-</pre></td></tr></tbody></table></code></pre></figure>
+</code></pre></div></div>
 
 <p>prefer something like</p>
 
-<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><table class="rouge-table"><tbody><tr><td class="gutter gl"><pre class="lineno">1
-</pre></td><td class="code"><pre><span class="k">return</span> <span class="n">users</span><span class="p">.</span><span class="nf">Select</span><span class="p">(</span><span class="n">user</span> <span class="p">=&gt;</span> <span class="n">Tasks</span><span class="p">.</span><span class="nf">For</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="n">Id</span><span class="p">)).</span><span class="nf">SelectMany</span><span class="p">(</span><span class="n">task</span> <span class="p">=&gt;</span> <span class="n">task</span><span class="p">).</span><span class="nf">ToList</span><span class="p">();</span>
-</pre></td></tr></tbody></table></code></pre></figure>
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">return</span> <span class="n">users</span><span class="p">.</span><span class="nf">Select</span><span class="p">(</span><span class="n">user</span> <span class="p">=&gt;</span> <span class="n">Tasks</span><span class="p">.</span><span class="nf">For</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="n">Id</span><span class="p">)).</span><span class="nf">SelectMany</span><span class="p">(</span><span class="n">task</span> <span class="p">=&gt;</span> <span class="n">task</span><span class="p">).</span><span class="nf">ToList</span><span class="p">();</span>
+</code></pre></div></div>
 
-<p>This might seem like syntactic sugar at first glance. That is because the functional paradigm have been transplanted onto a object oriented language like C# using Linq. In a pure functional language like <a href="http://clojure.org">Clojure</a> or <a href="http://www.haskell.org">Haskell</a>, the syntax would feel more natural. Interestingly, the Linq implementation is purely via extension methods and not by extending the <code class="language-plaintext highlighter-rouge">IEnumerable&lt;T&gt;</code> interface. We'll explore this bit in a follow up post.</p>
+<p>This might seem like syntactic sugar at first glance. That is because the functional paradigm have been transplanted onto a object oriented language like C# using Linq. In a pure functional language like <a href="http://clojure.org">Clojure</a> or <a href="http://www.haskell.org">Haskell</a>, the syntax would feel more natural. Interestingly, the Linq implementation is purely via extension methods and not by extending the <code class="language-plaintext highlighter-rouge">IEnumerable&lt;T&gt;</code> interface. We’ll explore this bit in a follow up post.</p>
 
     <div class="post-tags">
   
