@@ -14,7 +14,7 @@ Recently we ran into a problem with unit testing a piece of C# code because of t
 
 Consider the following sample code:
 
-{% codeblock lang:csharp AccountFinder.cs %}
+{% highlight csharp linenos %}
 public class AccountFinder
 {
 	private IAccountRepository repository;
@@ -30,11 +30,11 @@ public class AccountFinder
 		return searchStrategy.Find(criteria);
 	}
 }
-{% endcodeblock %}
+{% endhighlight %}
 
 The `AccountFinder` depends on the following bit of code to create the right kind of strategy.
 
-{% codeblock lang:csharp AccountSearchStrategyBuilder.cs %}
+{% highlight csharp linenos %}
 public class AccountSearchStrategyBuilder
 {
 	private IAccountRepository repository;
@@ -51,7 +51,7 @@ public class AccountSearchStrategyBuilder
 		return new DefaultAccountSearchStrategy(repository);
 	}
 }
-{% endcodeblock %}
+{% endhighlight %}
 
 As you can see in the `AccountSearchStrategyBuilder` implementation, we end up creating the instances of the strategies themselves because we can decide on the type of the strategy to create only after we inspect the `SearchCriteria`. So, that implies testing the `AccountSearchStrategyBuilder` would mean creation of the various implementations even though we do not really need them. And the builder needs to be injected with all the dependencies that are required by the individual strategy implementations. Yikes!!
 
@@ -59,7 +59,7 @@ So how do we solve the problem? Castle Windsor has a [facility](https://github.c
 
 The new implementation of the StrategyBuilder looks like
 
-{% codeblock lang:csharp AccountSearchStrategySelector.cs %}
+{% highlight csharp linenos %}
 public class AccountSearchStrategySelector : DefaultTypedFactoryComponentSelector
 {
 	protected override Type GetComponentType(MethodInfo method, object[] arguments)
@@ -70,34 +70,34 @@ public class AccountSearchStrategySelector : DefaultTypedFactoryComponentSelecto
 		return typeof(DefaultAccountSearchStrategy);
 	}
 }
-{% endcodeblock %}
+{% endhighlight %}
 This way, we are separating the responsibility clearly - the creational logic of wiring in the right dependencies is not expressed in our code. It stays with Windsor. But how do we use this in our `AccountFinder` code? Here is how
 
 First we need an interface that Windsor can implement for the `AccountSearchStrategySelector`
 
-{% codeblock lang:csharp IAccountSearchStrategyBuilder.cs %}
+{% highlight csharp linenos %}
 public interface IAccountSearchStrategyBuilder
 {
 	IAccountSearchStrategy Create(SearchCriteria criteria);
 }
-{% endcodeblock %}
+{% endhighlight %}
 
 This interface will not have an implementation in our codebase. It is purely used by Castle Windsor to generate a proxy which can be used in our `AccountFinder` implementation.
 
 Our Castle Windsor configuration now looks like below:
 
-{% codeblock lang:csharp %}
+{% highlight csharp linenos %}
 var container = new WindsorContainer();
 container.AddFacility<TypedFactoryFacility>();
 container.Register(Component.For<IAccountSearchStrategyBuilder>().AsFactory(f => f.SelectWith<AccountSearchStrategySelector>()));
 container.Register(Component.For<AccountSearchStrategySelector, ITypedFactoryComponentSelector>());
-{% endcodeblock %}
+{% endhighlight %}
 
 We are basically registering the `TypedFactoryFacility` with the container and then telling Windsor to use that factory to select an implementation type using the `.AsFactory` extension method when registering the `IAccountSearchStrategyBuilder`.
 
 The newer version of `AccountFinder` looks like below
 
-{% codeblock lang:csharp AccountFinder.cs %}
+{% highlight csharp linenos %}
 public class AccountFinder
 {
 	private IAccountRepository repository;
@@ -115,7 +115,7 @@ public class AccountFinder
 		return searchStrategy.Find(criteria);
 	}
 }
-{% endcodeblock %}
+{% endhighlight %}
 
 This way, we can test our individual classes easily by supplying mock/stubs instead of dealing with live instances that might require complicated setup.
 

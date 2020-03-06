@@ -20,8 +20,8 @@ gem "github-pages", group: :jekyll_plugins
 # If you have any plugins, put them here!
 group :jekyll_plugins do
   gem "octopress"
-  gem "octopress-codeblock"
-  gem "octopress-image-tag"
+  # gem "octopress-codeblock"
+  # gem "octopress-image-tag"
   gem "octopress-solarized"
 
   gem "jekyll-feed", "~> 0.13.0"
