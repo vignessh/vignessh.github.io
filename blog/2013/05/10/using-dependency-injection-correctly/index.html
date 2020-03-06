@@ -1,157 +1,162 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Using dependency injection correctly &#8211; Thoughts</title>
-    <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
-    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="&quot;My thoughts on programming, motorcycles and life in general&quot;">
-    <meta name="robots" content="all">
-    <meta name="author" content="Vignessh">
-    
-    
-    <link rel="canonical" href="https://vignessh.github.io/blog/2013/05/10/using-dependency-injection-correctly/">
-    <link rel="alternate" type="application/atom" title="Thoughts" href="/atom.xml" />
-    <link href="/favicon.png" rel="icon">
+<html lang="en-us">
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?202003051332" type="text/css">
-    <link href='/stylesheets/all-24269cd9b96d47c0a6c5be3e7ae4cfe0.css' media='all' rel='stylesheet' type='text/css'>
+  <head>
+  <link href="https://gmpg.org/xfn/11" rel="profile" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 
-<!-- Fonts -->
-    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
-    <link href='//fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
 
-    <!-- MathJax -->
+  <title>
     
+      Using dependency injection correctly &middot; Thoughts
+    
+  </title>
 
-    <!-- Verifications -->
-    
-    
+  
 
-    <!-- Open Graph -->
-    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
-    <meta property="og:locale" content="en_US">
-    <meta property="og:type" content="article">
-    <meta property="og:title" content="Using dependency injection correctly">
-    <meta property="og:description" content="&quot;My thoughts on programming, motorcycles and life in general&quot;">
-    <meta property="og:url" content="https://vignessh.github.io/blog/2013/05/10/using-dependency-injection-correctly/">
-    <meta property="og:site_name" content="Thoughts">
-    
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface" /> -->
+<!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic"> -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:900,300">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@1.207/distr/fira_code.css">
 
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary" />
-    
-        <meta name="twitter:site" content="@vignesshv" />
-        <meta name="twitter:creator" content="@vignesshv" />
-    
-    <meta name="twitter:title" content="Using dependency injection correctly" />
-    <meta name="twitter:description" content=""My thoughts on programming, motorcycles and life in general"" />
-    <meta name="twitter:url" content="https://vignessh.github.io/blog/2013/05/10/using-dependency-injection-correctly/" />
-    
 
-    
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/favicon.png" />
+<link rel="shortcut icon" href="/favicon.ico" />
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/feed.xml" />
+
+  <!-- Additional head bits without overriding original head -->
 </head>
-<body class="site">
 
-  <div class="site-wrap">
-    <header class="site-header px2 px-responsive">
-  <div class="mt2 wrap">
-    <div class="measure">
-      <a href="https://vignessh.github.io" class="site-title">thoughts</a>
-      <nav class="site-nav">
-        <a href="/archive/">Archive</a>
-    
+  <body class="post">
 
-    
-
-    
-    
-    
-    
-        <a href="/tags/">Tags</a>
-    
-
-    
-
-    
-    
-    
-    
-        <a href="/about/">About</a>
-      </nav>
-      <div class="clearfix"></div>
-      
-        <div class="social-icons">
-  <div class="social-icons-right">
-    
-      <a class="fa fa-github" href="https://github.com/vignessh"></a>
-    
-    
-    
-    
-    
-      <a class="fa fa-twitter" href="https://twitter.com/vignesshv"></a>
-    
-    
-    
-    
-    
-      <a class="fa fa-linkedin" href="https://www.linkedin.com/in/vignesshv"></a>
-    
-    
-    
-    
-    
-    
-      <a class="fa fa-instagram" href="https://www.instagram.com/vignesshv"></a>
-    
-    
-      <a class="fa fa-flickr" href="https://www.flickr.com/photos/vignessh"></a>
-    
-    
-    
-    <a class="fa fa-rss" href="/atom.xml"></a>
-    
-  </div>
-  <div class="right">
-    
-    
-    
-  </div>
-</div>
-<div class="clearfix"></div>
-      
-    </div>
-  </div>
-</header>
-
-    <div class="post p2 p-responsive wrap" role="main">
-      <div class="measure">
+    <div id="sidebar">
+  <header>
+    <div class="site-title">
+      <a href="/">
         
+          <span class="back-arrow icon"><svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0 0h24v24H0z" fill="none"/>
+  <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+</svg></span>
+        
+        Thoughts
+      </a>
+    </div>
+    <p class="lead">My thoughts on programming, motorcycles and life in general</p>
+  </header>
+  <nav id="sidebar-nav-links">
+  
+    <a class="home-link "
+        href="/">Home</a>
+  
+  
 
+  
 
+  <a class="page-link "
+          href="/about/">About</a>
+    
+  
 
-<div class="post-header mb2">
-  <h1>
   
-    Using dependency injection correctly
+    
+      <a class="page-link "
+          href="/archive/">Archive</a>
+    
   
-  </h1>
-  <span class="post-meta">2013-05-10 16:33:00 +0000</span><br>
+
   
-  <span class="post-meta small">
+
   
-    1 minute read
+
   
+    
+      <a class="page-link "
+          href="/tags/">Tags</a>
+  
+
+  <!-- Optional additional links to insert in sidebar nav -->
+</nav>
+
+  
+
+  <nav id="sidebar-icon-links">
+  
+
+  
+  <a id="github-link"
+     class="fa fa-github icon" title="Github" aria-label="Github"
+     href="https://github.com/vignessh">
+  </a>
+  
+
+  
+  <a id="twitter-link"
+     class="fa fa-twitter icon" title="Twitter" aria-label="Twitter"
+     href="https://twitter.com/vignesshv">
+  </a>
+  
+
+  
+  <a id="instagram-link"
+     class="fa fa-instagram icon" title="Instagram" aria-label="Instagram"
+     href="https://instagram.com/vignesshv">
+  </a>
+  
+
+  <a id="subscribe-link"
+     class="icon" title="Subscribe" aria-label="Subscribe"
+     href="/feed.xml">
+    <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <circle cx="6.18" cy="17.82" r="2.18"/>
+    <path d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"/>
+</svg>
+  </a>
+
+  
+  
+  
+  
+
+  
+
+  
+
+  <!-- Optional additional links to insert for icons links -->
+</nav>
+  <p>
+  &copy; 2020.
+
+  Vignessh
+  <!-- <a href="/LICENSE.md">MIT License.</a> -->
+</p>
+</div>
+
+    <main class="container">
+      <header>
+  <h1 class="post-title">Using dependency injection correctly</h1>
+</header>
+<div class="content">
+  <div class="post-meta">
+  <span class="post-date">10 May 2013</span>
+  <span class="post-categories">
+    
   </span>
 </div>
 
-<article class="post-content">
-  <p>Even though dependency injection is a better understood concept now than in the past, there is still code being written that does not keep the principle in mind. The problem seems to be around recognizing which dependencies are needed when constructing the object and which ones need resolution at runtime.</p>
+  <div class="post-body">
+    <p>Even though dependency injection is a better understood concept now than in the past, there is still code being written that does not keep the principle in mind. The problem seems to be around recognizing which dependencies are needed when constructing the object and which ones need resolution at runtime.</p>
 
 <!-- more -->
 <p>To better explain the problem, here is a sample piece of code.</p>
@@ -194,71 +199,106 @@
 
 <p>Notice the change to the arguments to the constructor and the <code class="language-plaintext highlighter-rouge">Find</code> implementation. Looking at example, it becomes evident as to how writing test friendly code can also help with how dependencies are expressed and therefore help with design of the class under concern. It is important to understand the difference between dependencies that can be resolved during instantiation time vs. those that can only be resolved during run time.</p>
 
-</article>
-
-
-
-
-  <div class="post-footer">
-
-
-<span class="post-meta">
-  <span class="byline author vcard">Posted by <span class="fn">Vignessh</span></span>
-</span>
-
-
-
-
-
-
-
-
-
-
- &bull; <span class="post-meta">
-  <time datetime="2013-05-10T16:33:00+00:00" pubdate data-updated="true">2013-05-10 16:33:00 +0000</time>
-</span>
-
-
-
+    <div class="post-tags">
+  
+    <span>
+      <span class="icon">
+        <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>
+</svg>
+      </span>&nbsp;<span class="tag-name">csharp</span>
+    </span>
+  
+    <span>
+      <span class="icon">
+        <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/>
+</svg>
+      </span>&nbsp;<span class="tag-name">tdd</span>
+    </span>
+  
 </div>
-
-
-
-
-
-  <div id="disqus_thread"></div>
-  <script type="text/javascript">
-    var disqus_shortname  = 'vignessh';
-    var disqus_identifier = 'https://vignessh.github.io/blog/2013/05/10/using-dependency-injection-correctly/';
-    var disqus_title      = "Using dependency injection correctly";
-
-    (function() {
-      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-  </script>
-  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-
-
-
-
-
-
-      </div>
-    </div>
   </div>
 
-  <footer class="center">
-  <div class="measure">
+  <section class="comments">
+    <h2>Comments</h2>
+    <div id="disqus_thread">
+    <button class="disqus-load" onClick="loadDisqusComments()">
+      Load Comments
+    </button>
+  </div>
+  <script>
+
+  /**
+  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW
+  *  TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT:s
+  *  https://disqus.com/admin/universalcode/#configuration-variables
+  */
+  var disqus_config = function () {
+    this.page.url = "https://vignessh.github.io/blog/2013/05/10/using-dependency-injection-correctly/";
+    this.page.identifier = "" ||
+                           "https://vignessh.github.io/blog/2013/05/10/using-dependency-injection-correctly/";
+  }
+  function loadDisqusComments() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = '//vignessh.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  }
+  </script>
+  <noscript>
+    Please enable JavaScript to view the
+    <a href="https://disqus.com/?ref_noscript">comments powered by Disqus</a>.
+  </noscript>
+  </section>
+  <section class="related">
+  <h2>Related Posts</h2>
+  <ul class="posts-list">
+    
+      <li>
+        <h3>
+          <a href="/blog/2013/04/28/using-castle-typefactory-facility/">
+            Using Castle TypeFactory facility
+            <small>28 Apr 2013</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/blog/2013/04/27/learning-functional-programming/">
+            Learning functional programming - Part 1
+            <small>27 Apr 2013</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/blog/2013/04/26/laziness-a-human-quality/">
+            Laziness: A human quality
+            <small>26 Apr 2013</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</section>
+</div>
+
+    </main>
+
+    <!-- Optional footer content -->
+<footer class="center">
+  <div>
     <small>
-      &copy; 2020 Vignessh.
-      Powered by <a href="https://jekyllrb.com/">Jekyll</a>
-      and <a href="https://github.com/octopress/octopress">Octopress 3</a>.
-      Theme based on <a href="https://github.com/johnotander/pixyll">Pixyll</a>.
+      Theme crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+      &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">GitHub</a>.
     </small>
   </div>
 </footer>
-</body>
+  </body>
 </html>
