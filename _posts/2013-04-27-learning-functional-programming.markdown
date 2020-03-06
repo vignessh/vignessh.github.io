@@ -16,7 +16,7 @@ I've been intrigued by functional programming paradigm ever since my good friend
 
 For example, instead of
 
-{% highlight csharp linenos %}
+```csharp
 var tasks = new List<Task>();
 foreach(var user in users)
 {
@@ -24,12 +24,12 @@ foreach(var user in users)
 	tasks.AddRange(userTasks);
 }
 return tasks;
-{% endhighlight %}
+```
 
 prefer something like
 
-{% highlight csharp linenos %}
+```csharp
 return users.Select(user => Tasks.For(user.Id)).SelectMany(task => task).ToList();
-{% endhighlight %}
+```
 
 This might seem like syntactic sugar at first glance. That is because the functional paradigm have been transplanted onto a object oriented language like C# using Linq. In a pure functional language like [Clojure](http://clojure.org) or [Haskell](http://www.haskell.org), the syntax would feel more natural. Interestingly, the Linq implementation is purely via extension methods and not by extending the `IEnumerable<T>` interface. We'll explore this bit in a follow up post.
