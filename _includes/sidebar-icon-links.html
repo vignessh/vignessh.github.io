@@ -33,6 +33,20 @@
   </a>
   {% endif %}
 
+  {% if site.linkedin_username %}
+  <a id="instagram-link"
+     class="fa fa-linkedin icon" title="LinkedIn" aria-label="LinkedIn"
+     href="https://www.linkedin.com/{{ site.linkedin_username }}">
+  </a>
+  {% endif %}
+
+  {% if site.flickr_username %}
+  <a id="instagram-link"
+     class="fa fa-flickr icon" title="Flickr" aria-label="Flickr"
+     href="https://www.flickr.com/{{ site.flickr_username }}">
+  </a>
+  {% endif %}
+
   <a id="subscribe-link"
      class="icon" title="Subscribe" aria-label="Subscribe"
      href="{{ site.feed.path | default: 'feed.xml' | relative_url }}">
