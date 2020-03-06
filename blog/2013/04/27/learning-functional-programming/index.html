@@ -176,17 +176,27 @@
 
 <p>For example, instead of</p>
 
-<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="kt">var</span> <span class="n">tasks</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">Task</span><span class="p">&gt;();</span>
-</div></div><div data-line="2" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="k">foreach</span><span class="p">(</span><span class="kt">var</span> <span class="n">user</span> <span class="k">in</span> <span class="n">users</span><span class="p">)</span>
-</div></div><div data-line="3" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="p">&#x7b;</span>
-</div></div><div data-line="4" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="kt">var</span> <span class="n">userTasks</span> <span class="p">=</span> <span class="n">Tasks</span><span class="p">.</span><span class="nf">For</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="n">Id</span><span class="p">);</span>
-</div></div><div data-line="5" class="code-highlight-row numbered"><div class="code-highlight-line">	<span class="n">tasks</span><span class="p">.</span><span class="nf">AddRange</span><span class="p">(</span><span class="n">userTasks</span><span class="p">);</span>
-</div></div><div data-line="6" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="p">&#x7d;</span>
-</div></div><div data-line="7" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="k">return</span> <span class="n">tasks</span><span class="p">;</span></div></div></pre></div></figure>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><table class="rouge-table"><tbody><tr><td class="gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="code"><pre><span class="kt">var</span> <span class="n">tasks</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">Task</span><span class="p">&gt;();</span>
+<span class="k">foreach</span><span class="p">(</span><span class="kt">var</span> <span class="n">user</span> <span class="k">in</span> <span class="n">users</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="kt">var</span> <span class="n">userTasks</span> <span class="p">=</span> <span class="n">Tasks</span><span class="p">.</span><span class="nf">For</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="n">Id</span><span class="p">);</span>
+	<span class="n">tasks</span><span class="p">.</span><span class="nf">AddRange</span><span class="p">(</span><span class="n">userTasks</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="k">return</span> <span class="n">tasks</span><span class="p">;</span>
+</pre></td></tr></tbody></table></code></pre></figure>
 
 <p>prefer something like</p>
 
-<figure class="code-highlight-figure"><div class="code-highlight"><pre class="code-highlight-pre"><div data-line="1" class="code-highlight-row numbered"><div class="code-highlight-line"><span class="k">return</span> <span class="n">users</span><span class="p">.</span><span class="nf">Select</span><span class="p">(</span><span class="n">user</span> <span class="p">=&gt;</span> <span class="n">Tasks</span><span class="p">.</span><span class="nf">For</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="n">Id</span><span class="p">)).</span><span class="nf">SelectMany</span><span class="p">(</span><span class="n">task</span> <span class="p">=&gt;</span> <span class="n">task</span><span class="p">).</span><span class="nf">ToList</span><span class="p">();</span></div></div></pre></div></figure>
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><table class="rouge-table"><tbody><tr><td class="gutter gl"><pre class="lineno">1
+</pre></td><td class="code"><pre><span class="k">return</span> <span class="n">users</span><span class="p">.</span><span class="nf">Select</span><span class="p">(</span><span class="n">user</span> <span class="p">=&gt;</span> <span class="n">Tasks</span><span class="p">.</span><span class="nf">For</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="n">Id</span><span class="p">)).</span><span class="nf">SelectMany</span><span class="p">(</span><span class="n">task</span> <span class="p">=&gt;</span> <span class="n">task</span><span class="p">).</span><span class="nf">ToList</span><span class="p">();</span>
+</pre></td></tr></tbody></table></code></pre></figure>
 
 <p>This might seem like syntactic sugar at first glance. That is because the functional paradigm have been transplanted onto a object oriented language like C# using Linq. In a pure functional language like <a href="http://clojure.org">Clojure</a> or <a href="http://www.haskell.org">Haskell</a>, the syntax would feel more natural. Interestingly, the Linq implementation is purely via extension methods and not by extending the <code class="language-plaintext highlighter-rouge">IEnumerable&lt;T&gt;</code> interface. We'll explore this bit in a follow up post.</p>
 
