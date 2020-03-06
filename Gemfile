@@ -23,9 +23,8 @@ group :jekyll_plugins do
   gem "octopress-codeblock"
   gem "octopress-image-tag"
   gem "octopress-solarized"
-  gem "octopress-asset-pipeline"
 
-  gem "jekyll-feed", "~> 0.6"
+  gem "jekyll-feed", "~> 0.13.0"
   gem "jekyll-paginate"
   gem "jekyll-sitemap"
   gem "jekyll-archives"

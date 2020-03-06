@@ -16,7 +16,7 @@
 title: Thoughts
 author: Vignessh
 description: >- # this means to ignore newlines until "baseurl:"
-  "My thoughts on programming, motorcycles and life in general"
+  My thoughts on programming, motorcycles and life in general
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://vignessh.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 
@@ -26,10 +26,12 @@ show_social_icons: true
 # Social icons
 twitter_username: vignesshv
 github_username:  vignessh
-disqus_shortname: vignessh
 linkedin_username: vignesshv
 flickr_username: vignessh
 instagram_username: vignesshv
+
+disqus:
+  shortname: vignessh
 
 header_pages:
  - archive.html
@@ -65,12 +67,15 @@ excerpt_link: "Read on &rarr;"
 theme: minima
 plugins:
   - jekyll-feed
-  - jekyll-seo-tag
+  - jekyll-gist
+  - jekyll-paginate
   - jekyll-sitemap
 
 markdown: kramdown
 kramdown:
   smart_quotes: ["apos", "apos", "quot", "quot"]  # Disable smart-quotes
+  input: GFM
+  syntax_highlighter: rouge
 
 permalink: /blog/:year/:month/:day/:title/  # Octopress 2-style permalink
 paginate: 2
@@ -78,6 +83,7 @@ paginate_path: "/blog/page/:num"
 sass:
   style: compressed
 
+sidebar_home_link:  true
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
 # to override the default setting.

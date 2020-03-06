@@ -2,6 +2,7 @@
 layout: page
 title: About
 permalink: /about/
+sidebar_link: true
 ---
 
 Hello, I'm Vignessh, and I can talk to both people and

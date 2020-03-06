@@ -224,8 +224,6 @@ GEM
       octopress-hooks (~> 2.0)
       redcarpet (~> 3.0)
       titlecase
-    octopress-asset-pipeline (2.0.6)
-      octopress-ink (~> 1.1.0)
     octopress-autoprefixer (2.0.1)
       autoprefixer-rails
       jekyll (~> 3.0)
@@ -306,12 +304,11 @@ DEPENDENCIES
   github-pages
   jekyll-archives
   jekyll-compose
-  jekyll-feed (~> 0.6)
+  jekyll-feed (~> 0.13.0)
   jekyll-paginate
   jekyll-sitemap
   minima (~> 2.0)
   octopress
-  octopress-asset-pipeline
   octopress-codeblock
   octopress-image-tag
   octopress-solarized
